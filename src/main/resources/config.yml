@@ -1,0 +1,109 @@
+# PVPRewards 2.0 CONFIG - BY JONJS2333 - https://jonjs.cn/
+Config-Version: 4
+
+#信息提示
+# 可以发送各种形式的消息, 格式如下:
+# 普通消息：message@文本
+# ActionBar消息：actionbar@文本
+# Title消息：title@淡入时间(tick)@停留时间@淡出时间@主标题@副标题
+# 注意: 主标题和副标题都不能为空, 如果你不想发送其中的一个, 可以将它设置为一个空格
+Messages:
+  Creating-Data: "message@&b&lPVPR &8>> &7正在为初始化您的数据..."
+  Created-Data: "message@&b&lPVPR &8>> &7数据初始化完成."
+  Loading-Data: "message@&b&lPVPR &8>> &7正在加载您的数据..."
+  Loaded-Data: "message@&b&lPVPR &8>> &7数据加载完成."
+  No-Permission: "message@&b&lPVPR &8>> &c您没有权限: {permission}"
+  Reloaded: "message@&b&lPVPR &8>> &a所有数据文件重载完毕!"
+  Command-Error: "message@&b&lPVPR &8>> &c指令格式错误!"
+
+  Point-Added: "message@&b&lPVPR &8>> &a已为玩家 &e{player} &a增加了 &b{amount} &aPVP积分"
+  Point-Removed: "message@&b&lPVPR &8>> &a已为玩家 &e{player} &a减少了 &b{amount} &aPVP积分"
+  Point-Set: "message@&b&lPVPR &8>> &a已将玩家 &e{player} &a的PVP积分设置为 &b{amount}"
+  Exp-Added: "message@&b&lPVPR &8>> &a已为玩家 &e{player} &a增加了 &b{amount} &aPVP经验"
+  Exp-Removed: "message@&b&lPVPR &8>> &a已为玩家 &e{player} &a减少了 &b{amount} &a点PVP经验"
+  Exp-Set: "message@&b&lPVPR &8>> &a已将玩家 &e{player} &a的PVP经验设置为 &b{amount} &a点"
+  Item-Is-Air: "title@10@60@10@&4&l[!]@&c手中物品不能是空气呀"
+  Item-Added: "message@&b&lPVPR &8>> &a商品 &f&o{editname} &a添加完毕!"
+  Item-Removed: "message@&b&lPVPR &8>> &a商品 &f&o{editname} &a移除完毕!"
+  Item-Not-Found: "message@&b&lPVPR &8>> &c未找到编辑名为 &f&o{editname} &c的商品"
+  Item-Exists: "message@&b&lPVPR &8>> &c编辑名 &f&o{editname} &c下的商品已经被设置过了! 请换个编辑名"
+  Item-EditName-Changed: "message@&b&lPVPR &8>> &a编辑名已经更改完毕: &f{old} -> {new}"
+  Item-Price-Changed: "message@&b&lPVPR &8>> &a价格已经更改完毕: &f-> {new}"
+  Item-Discount-Changed: "message@&b&lPVPR &8>> &a折扣已经更改完毕: &f-> {new}"
+  Item-Exp-Changed: "message@&b&lPVPR &8>> &a所需经验已经更改完毕: &f-> {new}"
+  Item-Count-Changed: "message@&b&lPVPR &8>> &a购买次数上限已更改: &f-> {new}"
+  Item-Stack-Changed: "message@&b&lPVPR &8>> &a物品更换成功! &f-> {new}"
+  Hologram-Created: "message@&b&lPVPR &8>> &a全息图 &f&o{holo} &a创建成功!"
+  Hologram-Removed: "message@&b&lPVPR &8>> &a全息图 &f&o{holo} &a移除成功!"
+  Hologram-Updated: "message@&b&lPVPR &8>> &a所有全息图已刷新完毕!"
+  Hologram-Exists: "message@&b&lPVPR &8>> &c全息图 &f&o{holo} &c已存在! 请换个编辑名"
+  Hologram-Not-Found: "message@&b&lPVPR &8>> &c未找到全息图 &f&o{holo}"
+
+  Player-Not-Enough-Point: "message@&b&lPVPR &8>> &c你没有足够的PVP积分! &f(需要: &e&l{need}&f, 而你只有: &e{have}&f)"
+  Player-Not-Enough-Exp: "message@&b&lPVPR &8>> &c你没有足够的PVP经验! &f(需要: &e&l{need}&f, 而你只有: &e{have}&f)"
+  Player-Not-Enough-Count: "message@&b&lPVPR &8>> &c该物品购买次数已达上限!"
+  Player-Bought-Item: "message@&b&lPVPR &8>> &a物品购买成功! &f(花费: &e{cost}&f, 剩余 &e&l{left}&f)"
+
+  PVP-Killed-Player: "title@10@80@10@&4击杀 &c{dead}@&6&o+{point} PVP积分 &8&l| &b&o+{exp} PVP经验值"
+  PVP-Anti-Timer: "actionbar@&e请等待 &c&l{left} &e秒后再击杀玩家"
+
+  Point-View: "message@&b&lPVPR &8>> &e{player} &3的PVP积分: &b&l{point}"
+  Exp-View: "message@&b&lPVPR &8>> &e{player} &3的PVP经验: &b&l{exp}"
+  Rank-View: "message@&b&lPVPR &8>> &e{player} &3的段位: &r{rank} &3(PVP经验: &b{exp}&3)"
+
+Settings:
+  #PVP机制设置
+  PVP:
+    #击杀每位玩家获得的PVP积分
+    Point-Per-Player: 2
+    #击杀每位玩家获得的PVP经验
+    Exp-Per-Player: 3
+    #开启的世界
+    Enable-World:
+      - world
+      - world_nether
+      - world_the_end
+  #防刷分机制设置
+  Anti:
+    Enable: true
+    #防刷分检测间隔. 单位为 秒, 只能是正整数
+    Time: 15
+    Punishment:
+      #可用的操作类型: NONE(什么都不做)、MESSAGE(发送消息)、KICK(踢出玩家)
+      Type: KICK
+      #若 Type=MESSAGE, 则Value为发送的消息, 格式同上
+      #若 Type=KICK, 则Value为踢出理由
+      Value: "&c您因刷分被踢出服务器!"
+
+  #GUI标题
+  GUI-Title:
+    Shop: "&2> &0&n积分商城"
+    Info: "&2> &0&n物品购买"
+    AdminShop: "&4> &0&n积分商城: 管理员模式"
+    ItemEditor: "&4> &0&n商品设置"
+
+  #全息图设置:
+  Hologram:
+    Plugin: HolographicDisplays
+    Refresh-Time: 300
+
+  #段位机制设置
+  Rank:
+    #聊天格式.
+    # {rank}=玩家当前段位展示名
+    # {chat}=原有的聊天格式
+    # 例如 "{rank}{chat}" => [无段位]<Jonjs2333>感谢使用呀!
+    Chat-Format: "{rank}{chat}"
+    List:
+      #段位编辑名
+      r0:
+        #所需PVP经验值
+        exp: 0
+        #段位展示名
+        display-name: "&7[无段位]"
+      r1:
+        exp: 50
+        display-name: "&f[青铜]"
+      r2:
+        exp: 300
+        display-name: "&6[黄金]"

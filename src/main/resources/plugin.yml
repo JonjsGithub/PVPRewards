@@ -1,0 +1,24 @@
+name: PVPRewards
+version: 2.0
+main: cn.jonjs.pvpr.Main
+softdepend: [ PlaceholderAPI, TrHologram, HolographicDisplays ]
+depend: [ JonAPI ]
+authors: [ Jonjs2333 ]
+website: https://jonjs.cn/
+api-version: 1.13
+commands:
+  pvpr:
+    description: "PVPRewards 指令."
+    usage: "/<command> help"
+  pvprs:
+    description: "PVPRewards 积分商城."
+    usage: "/<command>"
+  pvpras:
+    description: "PVPRewards 管理员积分商城."
+    usage: "/<command>"
+  pvprshop:
+    description: "PVPRewards 积分商城."
+    usage: "/<command>"
+  pvpradminshop:
+    description: "PVPRewards 管理员积分商城."
+    usage: "/<command>"
