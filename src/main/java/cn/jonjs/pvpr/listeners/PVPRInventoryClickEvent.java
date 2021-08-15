@@ -232,7 +232,7 @@ public class PVPRInventoryClickEvent implements Listener {
             }
 
             /** 商品列表 **/
-            int index = ShopInv.getIndex(ShopInv.itemSlots, e.getSlot());
+            int index = AdminShopInv.getIndex(AdminShopInv.itemSlots, e.getSlot());
             if (index != -1) {
                 Set set = ShopData.config.getKeys(false);
                 ArrayList<Object> list = new ArrayList(set);
@@ -240,6 +240,7 @@ public class PVPRInventoryClickEvent implements Listener {
                 int indexInKeysList = (pageNow - 1) * 28 + index;
                 if (list.get(indexInKeysList) instanceof String) {
                     String editName = (String) list.get(indexInKeysList);
+                    Maps.setEditing(p.getName(), editName);
                     Inventory infoInv = ItemEditInv.generate(editName);
                     p.closeInventory();
                     p.openInventory(infoInv);
