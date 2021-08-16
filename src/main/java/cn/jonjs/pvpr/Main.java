@@ -22,6 +22,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -280,7 +281,11 @@ public final class Main extends JavaPlugin {
                             } else {
                                 String name = args[3];
                                 int amount = Integer.parseInt(args[4]);
-                                Data.addPoint(name, amount);
+                                if(useMySQL) {
+                                    DataFromSQL.addPoint(name, amount);
+                                } else {
+                                    Data.addPoint(name, amount);
+                                }
                                 MsgSender.sendNormally(p, config.getString("Messages.Point-Added")
                                         .replace("{amount}", "" + amount)
                                         .replace("{player}", name));
@@ -292,7 +297,11 @@ public final class Main extends JavaPlugin {
                             } else {
                                 String name = args[3];
                                 int amount = Integer.parseInt(args[4]);
-                                Data.removePoint(name, amount);
+                                if(useMySQL) {
+                                    DataFromSQL.takePoint(name, amount);
+                                } else {
+                                    Data.removePoint(name, amount);
+                                }
                                 MsgSender.sendNormally(p, config.getString("Messages.Point-Removed")
                                         .replace("{amount}", "" + amount)
                                         .replace("{player}", name));
@@ -304,7 +313,11 @@ public final class Main extends JavaPlugin {
                             } else {
                                 String name = args[3];
                                 int amount = Integer.parseInt(args[4]);
-                                Data.setPoint(name, amount);
+                                if(useMySQL) {
+                                    DataFromSQL.setPoint(name, amount);
+                                } else {
+                                    Data.setPoint(name, amount);
+                                }
                                 MsgSender.sendNormally(p, config.getString("Messages.Point-Set")
                                         .replace("{amount}", "" + amount)
                                         .replace("{player}", name));
@@ -326,7 +339,11 @@ public final class Main extends JavaPlugin {
                             } else {
                                 String name = args[3];
                                 int amount = Integer.parseInt(args[4]);
-                                Data.addExp(name, amount);
+                                if(useMySQL) {
+                                    DataFromSQL.addExp(name, amount);
+                                } else {
+                                    Data.addExp(name, amount);
+                                }
                                 MsgSender.sendNormally(p, config.getString("Messages.Exp-Added")
                                         .replace("{amount}", "" + amount)
                                         .replace("{player}", name));
@@ -338,7 +355,11 @@ public final class Main extends JavaPlugin {
                             } else {
                                 String name = args[3];
                                 int amount = Integer.parseInt(args[4]);
-                                Data.removeExp(name, amount);
+                                if(useMySQL) {
+                                    DataFromSQL.takeExp(name, amount);
+                                } else {
+                                    Data.removeExp(name, amount);
+                                }
                                 MsgSender.sendNormally(p, config.getString("Messages.Exp-Removed")
                                         .replace("{amount}", "" + amount)
                                         .replace("{player}", name));
@@ -350,7 +371,11 @@ public final class Main extends JavaPlugin {
                             } else {
                                 String name = args[3];
                                 int amount = Integer.parseInt(args[4]);
-                                Data.setExp(name, amount);
+                                if(useMySQL) {
+                                    DataFromSQL.setExp(name, amount);
+                                } else {
+                                    Data.setExp(name, amount);
+                                }
                                 MsgSender.sendNormally(p, config.getString("Messages.Exp-Set")
                                         .replace("{amount}", "" + amount)
                                         .replace("{player}", name));
@@ -421,8 +446,9 @@ public final class Main extends JavaPlugin {
                                 double discount = Double.parseDouble(args[5]);
                                 int exp = Integer.parseInt(args[6]);
                                 int count = Integer.parseInt(args[7]);
+                                ItemStack item = useMySQL ? DataFromSQL.getItem(editName) : Data.getItem(editName);
 
-                                if(Data.getItem(editName) != null) { //编辑名下的物品已存在
+                                if(item != null) { //编辑名下的物品已存在
                                     MsgSender.sendNormally(p, config.getString("Messages.Item-Exists")
                                             .replace("{editname}", editName));
                                 } else {
@@ -431,7 +457,11 @@ public final class Main extends JavaPlugin {
                                         MsgSender.sendFromKey(p, "Messages.Item-Is-Air");
                                     } else {
                                         //正常新增
-                                        Data.setItem(ViaVersion.getItemInMainHand(p), editName, price, discount, exp, count);
+                                        if(useMySQL) {
+                                            DataFromSQL.setItem(editName, ViaVersion.getItemInMainHand(p), price, discount, exp, count);
+                                        } else {
+                                            Data.setItem(ViaVersion.getItemInMainHand(p), editName, price, discount, exp, count);
+                                        }
                                         Maps.setEditing(p.getName(), editName);
                                         Inventory inv = ItemEditInv.generate(editName);
                                         p.closeInventory();
