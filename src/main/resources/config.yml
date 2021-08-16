@@ -87,6 +87,23 @@ Settings:
     Plugin: HolographicDisplays
     Refresh-Time: 300
 
+  #数据库设置
+  MySQL:
+    Enable: false
+    Config:
+      DB_IP: "location"
+      DB_PORT: 3306
+      DB_NAME: "pvprewards"
+      DB_USER: "root"
+      DB_PASSWORD: "root"
+      DB_TABLE_PREFIX: "pvpr"
+    Modules:
+      Point: true
+      Exp: true
+      Shop: true
+      Hologram: true
+      Count: true
+
   #段位机制设置
   Rank:
     #聊天格式.
