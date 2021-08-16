@@ -46,6 +46,9 @@ public final class Main extends JavaPlugin {
         if( ! ArrayUtils.isInArray(ver_second, ALLOW_MC_VERSION)) {
             getLogger().warning("[X] 此插件不支持 " + GameVersionUtils.getBukkitVersion() + " 版本的服务器!");
         }
+        if( ! getServer().getPluginManager().getPlugin("JonAPI").getDescription().getVersion().contains("1.0")) {
+            getLogger().warning("[X] 前置插件 JonAPI 版本太低! (需要 >= 1.1)");
+        }
         PluginTasks.reloadAll();
         config = getConfig();
         getLogger().info("数据文件加载完毕!");
@@ -64,6 +67,7 @@ public final class Main extends JavaPlugin {
         getLogger().info("事件监听器注册成功!");
         if(config.getInt("Config-Version", -1) != CONFIG_VERSION) {
             ConfigUpdater.update();
+            getLogger().info("所有数据文件升级成功! 4 -> 5");
         }
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             PAPIHooker papiHooker = new PAPIHooker(this);
@@ -73,7 +77,7 @@ public final class Main extends JavaPlugin {
             getLogger().warning("PlaceholderAPI 插件未找到, 变量功能无法使用!");
         }
         if (getServer().getPluginManager().getPlugin(config.getString("Settings.Hologram.Plugin")) != null) {
-            long rTime = config.getInt("Settings.Hologram.Refresh-Time", 300 ) * 20;
+            long rTime = config.getInt("Settings.Hologram.Refresh-Time", 30 ) * 20;
             Bukkit.getScheduler().runTaskTimer(
                     this,
                     new Runnable() {
@@ -91,7 +95,7 @@ public final class Main extends JavaPlugin {
         }
         int pluginId = 12411; // bStats Plugin ID
         Metrics metrics = new Metrics(this, pluginId);
-        getLogger().info("PVPRewards 插件已开启! BY JONJS2333");
+        getLogger().info("PVPRewards 插件已开启!   BY JONJS2333");
     }
 
     @Override

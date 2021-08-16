@@ -19,6 +19,9 @@ public class ConfigUpdater {
             config.set("Settings.MySQL.Config.DB_USER", "root");
             config.set("Settings.MySQL.Config.DB_PASSWORD", "root");
             config.set("Settings.MySQL.Config.DB_TABLE_PREFIX", "pvpr");
+            config.set("Settings.PVP.Point-Take-On-Death", 0);
+            config.set("Settings.PVP.Exp-Take-On-Death", 0);
+            config.set("Messages.PVP-Player-Died", "message@&b&lPVPR &8>> &c你因在PVP中死亡而被扣除 &b{point} &3PVP积分、&b{exp} &3PVP经验值");
             config.set("Config-Version", 5);
             Main.getInst().saveConfig();
             ArrayList<String> players = new ArrayList<>(PointData.config.getKeys(false));
@@ -29,7 +32,6 @@ public class ConfigUpdater {
             }
             PointData.save();
         }
-        System.out.println("相关数据文件已经自动转换为新版本.");
     }
 
 }
