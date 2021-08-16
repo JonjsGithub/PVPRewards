@@ -25,8 +25,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 
 public final class Main extends JavaPlugin {
 

@@ -26,13 +26,20 @@ public class MySQLQuery {
         if(rs.next()) {
             point = rs.getInt("point");
         } else {
-            sql = "INSERT INTO "+tablePrefix+"_point ('"+playerName+"', 0, now(), 0)";
+            sql = "INSERT INTO "+tablePrefix+"_point VALUES ('"+playerName+"', 0, now(), 0);";
             ps = conn.prepareStatement(sql);
             ps.execute();
         }
         ps.close();
         rs.close();
         return point;
+    }
+    public void setPoint(String playerName, int point) throws SQLException {
+        String sql = "UPDATE "+tablePrefix+"_point SET point="+point+" WHERE player='"+playerName+"';";
+        PreparedStatement ps;
+        ps = conn.prepareStatement(sql);
+        ps.execute();
+        ps.close();
     }
 
     public int getToday(String playerName) throws SQLException {
@@ -44,7 +51,7 @@ public class MySQLQuery {
         if(rs.next()) {
             point = rs.getInt("today_point");
         } else {
-            sql = "INSERT INTO "+tablePrefix+"_point ('"+playerName+"', 0, now(), 0)";
+            sql = "INSERT INTO "+tablePrefix+"_point VALUES ('"+playerName+"', 0, now(), 0);";
             ps = conn.prepareStatement(sql);
             ps.execute();
         }

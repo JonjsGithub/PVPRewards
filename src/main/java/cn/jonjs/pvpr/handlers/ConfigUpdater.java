@@ -25,7 +25,7 @@ public class ConfigUpdater {
             for(String p : players) {
                 int original = PointData.config.getInt(p);
                 PointData.config.set(p + ".point", original);
-                PointData.config.set(p + ".today", original);
+                PointData.config.set(p + ".today", 0);
             }
             PointData.save();
         }

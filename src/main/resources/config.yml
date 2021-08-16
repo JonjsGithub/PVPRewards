@@ -3,6 +3,7 @@ Config-Version: 5
 
 #信息提示
 # 可以发送各种形式的消息, 格式如下:
+# 关闭: none
 # 普通消息：message@文本
 # ActionBar消息：actionbar@文本
 # Title消息：title@淡入时间(tick)@停留时间@淡出时间@主标题@副标题
@@ -56,8 +57,12 @@ Settings:
   PVP:
     #击杀每位玩家获得的PVP积分
     Point-Per-Player: 2
+    #被击杀扣除的PVP积分
+    Point-Take-On-Death: 0
     #击杀每位玩家获得的PVP经验
     Exp-Per-Player: 3
+    #被击杀扣除的PVP经验
+    Exp-Take-On-Death: 0
     #开启的世界
     Enable-World:
       - world
@@ -65,9 +70,11 @@ Settings:
       - world_the_end
   #防刷分机制设置
   Anti:
+    #是否开启
     Enable: true
     #防刷分检测间隔. 单位为 秒, 只能是正整数
     Time: 15
+    #刷分惩罚
     Punishment:
       #可用的操作类型: NONE(什么都不做)、MESSAGE(发送消息)、KICK(踢出玩家)
       Type: KICK
@@ -89,6 +96,7 @@ Settings:
 
   #数据库设置
   MySQL:
+    #是否开启
     Enable: false
     Config:
       DB_IP: "localhost"
