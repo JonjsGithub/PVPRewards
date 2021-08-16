@@ -1,5 +1,5 @@
 # PVPRewards 2.0 CONFIG - BY JONJS2333 - https://jonjs.cn/
-Config-Version: 4
+Config-Version: 5
 
 #信息提示
 # 可以发送各种形式的消息, 格式如下:
@@ -97,11 +97,6 @@ Settings:
       DB_USER: "root"
       DB_PASSWORD: "root"
       DB_TABLE_PREFIX: "pvpr"
-    Modules:
-      Point: true
-      Exp: true
-      Shop: true
-      Count: true
 
   #段位机制设置
   Rank:

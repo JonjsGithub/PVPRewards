@@ -4,6 +4,7 @@ import cn.jonjs.jonapi.utils.ArrayUtils;
 import cn.jonjs.jonapi.utils.GameVersionUtils;
 import cn.jonjs.pvpr.admininventories.AdminShopInv;
 import cn.jonjs.pvpr.data.Data;
+import cn.jonjs.pvpr.data.DataFromSQL;
 import cn.jonjs.pvpr.data.HologramData;
 import cn.jonjs.pvpr.data.Maps;
 import cn.jonjs.pvpr.handlers.*;
@@ -12,8 +13,8 @@ import cn.jonjs.pvpr.hookers.PAPIHooker;
 import cn.jonjs.pvpr.inventories.ShopInv;
 import cn.jonjs.pvpr.listeners.*;
 import cn.jonjs.pvpr.metrics.Metrics;
+import cn.jonjs.pvpr.mysql.*;
 import cn.jonjs.pvpr.viaversion.ViaVersion;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -24,12 +25,16 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 public final class Main extends JavaPlugin {
 
-    public static final int CONFIG_VERSION = 4;
+    public static final int CONFIG_VERSION = 5;
     public static final String[] ALLOW_MC_VERSION = {"19", "18", "17", "16", "15", "14", "13", "12", "11", "10", "9", "8"};
     FileConfiguration config;
     private static Plugin inst;
+    public static boolean useMySQL = false;
 
     public static Plugin getInst() {
         return inst;
@@ -39,28 +44,29 @@ public final class Main extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         inst = this;
-
         String ver_second = GameVersionUtils.getBukkitVersion_Second();
         if( ! ArrayUtils.isInArray(ver_second, ALLOW_MC_VERSION)) {
             getLogger().warning("[X] 此插件不支持 " + GameVersionUtils.getBukkitVersion() + " 版本的服务器!");
         }
-
-
         PluginTasks.reloadAll();
         config = getConfig();
         getLogger().info("数据文件加载完毕!");
+
+        if(config.getBoolean("Settings.MySQL.Enable", false)) {
+            MySQLHelper.processAll();
+            getLogger().info("MySQL 数据库处理完成.");
+        }
+
+        useMySQL = config.getBoolean("Settings.MySQL.Enable", false);
 
         getServer().getPluginManager().registerEvents(new PVPRPlayerJoinEvent(), this);
         getServer().getPluginManager().registerEvents(new PVPRInventoryClickEvent(), this);
         getServer().getPluginManager().registerEvents(new PVPRPlayerDeathEvent(), this);
         getServer().getPluginManager().registerEvents(new PVPRPlayerChatEvent(), this);
         getLogger().info("事件监听器注册成功!");
-
         if(config.getInt("Config-Version", -1) != CONFIG_VERSION) {
-            getLogger().warning("[X] 配置文件版本错误! 所需的配置文件版本号为: " + CONFIG_VERSION);
-            setEnabled(false);
+            ConfigUpdater.update();
         }
-
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             PAPIHooker papiHooker = new PAPIHooker(this);
             papiHooker.register();
@@ -68,7 +74,6 @@ public final class Main extends JavaPlugin {
         } else {
             getLogger().warning("PlaceholderAPI 插件未找到, 变量功能无法使用!");
         }
-
         if (getServer().getPluginManager().getPlugin(config.getString("Settings.Hologram.Plugin")) != null) {
             long rTime = config.getInt("Settings.Hologram.Refresh-Time", 300 ) * 20;
             Bukkit.getScheduler().runTaskTimer(
@@ -86,10 +91,8 @@ public final class Main extends JavaPlugin {
         } else {
             getLogger().warning("全息图插件未找到, 全息图功能无法使用!");
         }
-
         int pluginId = 12411; // bStats Plugin ID
         Metrics metrics = new Metrics(this, pluginId);
-
         getLogger().info("PVPRewards 插件已开启! BY JONJS2333");
     }
 
@@ -184,14 +187,16 @@ public final class Main extends JavaPlugin {
                 }
                 if(args[1].equalsIgnoreCase("view")) {
                     if (args.length == 2) {
+                        int point = useMySQL ? DataFromSQL.getPoint(p.getName()) : Data.getPoint(p.getName());
                         MsgSender.sendNormally(p, config.getString("Messages.Point-View")
                                 .replace("{player}", p.getName())
-                                .replace("{point}", "" + Data.getPoint(p.getName())));
+                                .replace("{point}", "" + point));
                     } else {
                         String pn = args[2];
+                        int point = useMySQL ? DataFromSQL.getPoint(pn) : Data.getPoint(pn);
                         MsgSender.sendNormally(p, config.getString("Messages.Point-View")
                                 .replace("{player}", pn)
-                                .replace("{point}", "" + Data.getPoint(pn)));
+                                .replace("{point}", "" + point));
                     }
                 }
             }

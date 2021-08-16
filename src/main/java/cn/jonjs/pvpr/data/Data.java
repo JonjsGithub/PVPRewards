@@ -7,21 +7,25 @@ import java.util.Set;
 
 public class Data {
 
+    public static int getTodayPoint(String name) {
+        return PointData.config.getInt(name + ".today", 0);
+    }
+
     public static int getPoint(String name) {
-        return PointData.config.getInt(name, 0);
+        return PointData.config.getInt(name + ".point", 0);
     }
     public static void addPoint(String name, int amount) {
-        int a = PointData.config.getInt(name, 0);
+        int a = PointData.config.getInt(name + ".point", 0);
         PointData.config.set(name, a + amount);
         PointData.save();
     }
     public static void removePoint(String name, int amount) {
-        int a = PointData.config.getInt(name, 0);
+        int a = PointData.config.getInt(name + ".point", 0);
         PointData.config.set(name, a - amount);
         PointData.save();
     }
     public static void setPoint(String name, int amount) {
-        PointData.config.set(name, amount);
+        PointData.config.set(name + ".point", amount);
         PointData.save();
     }
 
