@@ -91,7 +91,7 @@ Settings:
   MySQL:
     Enable: false
     Config:
-      DB_IP: "location"
+      DB_IP: "localhost"
       DB_PORT: 3306
       DB_NAME: "pvprewards"
       DB_USER: "root"
@@ -101,7 +101,6 @@ Settings:
       Point: true
       Exp: true
       Shop: true
-      Hologram: true
       Count: true
 
   #段位机制设置

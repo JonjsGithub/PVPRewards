@@ -15,9 +15,7 @@ public class MySQLUpdater {
     }
 
     public void updateAll() {
-        if () {
 
-        }
     }
 
 }

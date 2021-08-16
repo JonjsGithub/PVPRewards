@@ -8,14 +8,16 @@ import java.util.ArrayList;
 public class MySQLInitializer {
 
     private Connection conn;
+    private String tablePrefix = "";
 
     public MySQLInitializer(Connection connection) {
         conn = connection;
+        tablePrefix = MySQLConnector.PREFIX;
     }
 
-    public void initTables(String tablePrefix) throws SQLException {
+    public void initTables() throws SQLException {
         ArrayList<String> sqlList = new ArrayList<>();
-        sqlList.add("SET NAMES utf-8");
+        sqlList.add("SET NAMES utf-8;");
         sqlList.add("CREATE TABLE IF NOT EXISTS `"+tablePrefix+"_point` (" +
                 " `player` varchar(128) NOT NULL," +
                 " `point` int(11) NOT NULL," +
@@ -43,7 +45,7 @@ public class MySQLInitializer {
                 " `edit_name` varchar(128) NOT NULL," +
                 " `location` blob NOT NULL COMMENT '位置信息(序列化后)'" +
                 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;");
-        sqlList.add("CREATE TABLE `"+tablePrefix"_count` (" +
+        sqlList.add("CREATE TABLE `"+tablePrefix+"_count` (" +
                 " `player` varchar(128) NOT NULL COMMENT '[不唯一]'," +
                 " `edit_name` varchar(128) NOT NULL COMMENT '商品编辑名'," +
                 " `count` int(11) NOT NULL COMMENT '对应次数'" +
