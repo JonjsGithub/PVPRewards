@@ -31,7 +31,8 @@ public class MySQLInitializer {
                 "`player` varchar(128) NOT NULL," +
                 "`exp` int(11) NOT NULL" +
                 ") ENGINE=MyISAM DEFAULT CHARSET=utf8;");
-        sqlList.add("ALTER TABLE `"+tablePrefix+"_point` ADD UNIQUE( `player`);"); //唯一. 设置后, insert = update
+        sqlList.add("ALTER TABLE `"+tablePrefix+"_point` ADD UNIQUE( `player`);"); //唯一
+        sqlList.add("ALTER TABLE `"+tablePrefix+"_exp` ADD UNIQUE( `player`);");
         PreparedStatement ps = null;
         for(String sql : sqlList) {
             ps = conn.prepareStatement(sql);

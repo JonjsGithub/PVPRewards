@@ -68,7 +68,7 @@ public final class Main extends JavaPlugin {
         getLogger().info("事件监听器注册成功!");
         if(config.getInt("Config-Version", -1) != CONFIG_VERSION) {
             ConfigUpdater.update();
-            getLogger().info("所有数据文件升级成功! 4 -> 5");
+            getLogger().info("[!] 所有数据文件升级成功! 4 -> 5");
         }
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             PAPIHooker papiHooker = new PAPIHooker(this);
