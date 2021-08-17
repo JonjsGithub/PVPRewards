@@ -1,11 +1,13 @@
 package cn.jonjs.pvpr.handlers;
 
 import cn.jonjs.pvpr.Main;
+import cn.jonjs.pvpr.data.Data;
 import cn.jonjs.pvpr.data.DataFromSQL;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
@@ -18,35 +20,52 @@ public class TimeHandler {
         if(limit == -1) {
             return true;
         }
+        int today;
+        String last_time;
         if(Main.useMySQL) {
-            int today = DataFromSQL.getToday(player);
-            //int add = config.getInt("Settings.PVP.Point-Per-Player", 0);
-            String last_time = DataFromSQL.getLastTime(player);
+            today = DataFromSQL.getToday(player);
+            last_time = DataFromSQL.getLastTime(player);
             boolean isSameDay = isSameDay(last_time, now());
-            if( ! isSameDay && today < limit) {
+            if( ! isSameDay) {
                 DataFromSQL.setToday(player, 0);
                 return true;
             }
             if(isSameDay && today < limit) {
                 return true;
             }
-            if(today > limit) {
+            if(today >= limit) {
+                return false;
+            }
+        } else {
+            today = Data.getToday(player);
+            last_time = Data.getLastTime(player);
+            boolean isSameDay = isSameDay(last_time, now());
+            if( ! isSameDay) {
+                Data.setToday(player, 0);
+                return true;
+            }
+            if(isSameDay && today < limit) {
+                return true;
+            }
+            if(today >= limit) {
                 return false;
             }
         }
+
         return false;
     }
 
     public static String now() {
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy年MM月dd日 hh:mm:ss");
+        String offset = config.getString("Settings.PVP.Time-Zone", "+08:00");
+        now.toInstant(ZoneOffset.of(offset));
+        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String nowStr = now.format(formatter2);
         return nowStr;
     }
 
-    public static boolean isSameDay(String timeStr1, String timeStr2) {
-        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-        return fmt.format(timeStr1).equals(fmt.format(timeStr2));
+    public static boolean isSameDay(String dateStr1, String dateStr2) {
+        return dateStr1.equals(dateStr2);
     }
 
 }

@@ -47,7 +47,7 @@ public final class Main extends JavaPlugin {
         if( ! ArrayUtils.isInArray(ver_second, ALLOW_MC_VERSION)) {
             getLogger().warning("[X] 此插件不支持 " + GameVersionUtils.getBukkitVersion() + " 版本的服务器!");
         }
-        if( ! getServer().getPluginManager().getPlugin("JonAPI").getDescription().getVersion().contains("1.0")) {
+        if(getServer().getPluginManager().getPlugin("JonAPI").getDescription().getVersion().contains("1.0")) {
             getLogger().warning("[X] 前置插件 JonAPI 版本太低! (需要 >= 1.1)");
         }
         PluginTasks.reloadAll();
@@ -212,14 +212,16 @@ public final class Main extends JavaPlugin {
                 }
                 if(args[1].equalsIgnoreCase("view")) {
                     if (args.length == 2) {
+                        int exp = useMySQL ? DataFromSQL.getExp(p.getName()) : Data.getExp(p.getName());
                         MsgSender.sendNormally(p, config.getString("Messages.Exp-View")
                                 .replace("{player}", p.getName())
-                                .replace("{exp}", "" + Data.getExp(p.getName())));
+                                .replace("{exp}", "" + exp));
                     } else {
                         String pn = args[2];
+                        int exp = useMySQL ? DataFromSQL.getExp(pn) : Data.getExp(pn);
                         MsgSender.sendNormally(p, config.getString("Messages.Exp-View")
                                 .replace("{player}", pn)
-                                .replace("{exp}", "" + Data.getExp(pn)));
+                                .replace("{exp}", "" + exp));
                     }
                 }
             }

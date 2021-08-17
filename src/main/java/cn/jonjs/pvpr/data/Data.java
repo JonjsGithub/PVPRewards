@@ -1,5 +1,6 @@
 package cn.jonjs.pvpr.data;
 
+import cn.jonjs.pvpr.handlers.TimeHandler;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -7,8 +8,33 @@ import java.util.Set;
 
 public class Data {
 
-    public static int getTodayPoint(String name) {
+    public static int getToday(String name) {
         return PointData.config.getInt(name + ".today", 0);
+    }
+    public static void addToday(String name, int point) {
+        int original = getToday(name);
+        int value = point + original;
+        PointData.config.set(name + ".today", value);
+        PointData.save();
+    }
+    public static void takeToday(String name, int point) {
+        int original = getToday(name);
+        int value = point - original;
+        PointData.config.set(name + ".today", value);
+        PointData.save();
+    }
+    public static void setToday(String name, int point) {
+        int original = getToday(name);
+        PointData.config.set(name + ".today", point);
+        PointData.save();
+    }
+
+    public static String getLastTime(String name) {
+        return PointData.config.getString(name + ".time");
+    }
+    public static void updateLastTime(String name) {
+        PointData.config.set(name + ".time", TimeHandler.now());
+        PointData.save();
     }
 
     public static int getPoint(String name) {
@@ -16,12 +42,12 @@ public class Data {
     }
     public static void addPoint(String name, int amount) {
         int a = PointData.config.getInt(name + ".point", 0);
-        PointData.config.set(name, a + amount);
+        PointData.config.set(name + ".point", a + amount);
         PointData.save();
     }
     public static void removePoint(String name, int amount) {
         int a = PointData.config.getInt(name + ".point", 0);
-        PointData.config.set(name, a - amount);
+        PointData.config.set(name + ".point", a - amount);
         PointData.save();
     }
     public static void setPoint(String name, int amount) {
@@ -137,6 +163,5 @@ public class Data {
     public static void setNeedExp(String editName, int exp) {
         ShopData.config.set(editName + ".exp", exp);
     }
-
 
 }

@@ -1,7 +1,9 @@
 package cn.jonjs.pvpr.listeners;
 
 import cn.jonjs.jonapi.utils.MessageUtils;
+import cn.jonjs.pvpr.Main;
 import cn.jonjs.pvpr.data.Data;
+import cn.jonjs.pvpr.data.DataFromSQL;
 import cn.jonjs.pvpr.data.Maps;
 import cn.jonjs.pvpr.data.PointData;
 import cn.jonjs.pvpr.handlers.MsgSender;
@@ -13,6 +15,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.util.zip.DataFormatException;
+
 public class PVPRPlayerJoinEvent implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -22,8 +26,17 @@ public class PVPRPlayerJoinEvent implements Listener {
 
         if( ! PointData.config.isSet(p.getName())) {
             MsgSender.sendFromKey(p, "Messages.Creating-Data");
-            Data.setPoint(p.getName(), 0);
-            Data.setExp(p.getName(), 0);
+            if(Main.useMySQL) {
+                DataFromSQL.setPoint(p.getName(), 0);
+                DataFromSQL.setToday(p.getName(), 0);
+                DataFromSQL.setLastTime(p.getName());
+                DataFromSQL.setExp(p.getName(), 0);
+            } else {
+                Data.setPoint(p.getName(), 0);
+                Data.setToday(p.getName(), 0);
+                Data.updateLastTime(p.getName());
+                Data.setExp(p.getName(), 0);
+            }
             Maps.setPage(p.getName(), 1);
             MsgSender.sendFromKey(p, "Messages.Created-Data");
         } else {

@@ -54,7 +54,7 @@ public class PVPRPlayerDeathEvent implements Listener {
                     if(last.equals(died.getName())) { //重复击杀
                         killed.add(died.getName());
                         Maps.killSameMap.replace(killer, killed);
-                        point = pointList.size() < killed.size() ? pointList.get(pointList.size() - 1) : pointList.get(size - 1) ;
+                        point = pointList.size() < killed.size() ? pointList.get(pointList.size() - 1) : pointList.get(killed.size() - 1) ;
                     } else { //不重复击杀
                         ArrayList<String> newKilled = new ArrayList<>();
                         newKilled.add(died.getName());
@@ -70,10 +70,10 @@ public class PVPRPlayerDeathEvent implements Listener {
                 // 积分、经验结算
                 if(TimeHandler.canAdd(killer.getName())) {
                     if (Main.useMySQL) {
-                        DataFromSQL.setLastTime(killer.getName());
-                        DataFromSQL.addToday(killer.getName(), point);
                         /** 增加killer PVP积分、经验 **/
                         DataFromSQL.addPoint(killer.getName(), point);
+                        DataFromSQL.addToday(killer.getName(), point);
+                        DataFromSQL.setLastTime(killer.getName());
                         DataFromSQL.addExp(killer.getName(), exp);
                         /** 扣除died PVP积分 **/
                         if ((DataFromSQL.getPoint(died.getName()) - pointTake < 0)) {
@@ -89,6 +89,8 @@ public class PVPRPlayerDeathEvent implements Listener {
                     } else {
                         /** 增加killer PVP积分、经验 **/
                         Data.addPoint(killer.getName(), point);
+                        Data.addToday(killer.getName(), point);
+                        Data.updateLastTime(killer.getName());
                         Data.addExp(killer.getName(), exp);
                         /** 扣除died PVP积分 **/
                         if ((Data.getPoint(died.getName()) - pointTake < 0)) {
