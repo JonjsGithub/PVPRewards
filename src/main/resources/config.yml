@@ -1,8 +1,9 @@
 # PVPRewards 2.0 CONFIG - BY JONJS2333 - https://jonjs.cn/
-Config-Version: 4
+Config-Version: 5
 
 #信息提示
 # 可以发送各种形式的消息, 格式如下:
+# 关闭: none
 # 普通消息：message@文本
 # ActionBar消息：actionbar@文本
 # Title消息：title@淡入时间(tick)@停留时间@淡出时间@主标题@副标题
@@ -45,7 +46,9 @@ Messages:
   Player-Bought-Item: "message@&b&lPVPR &8>> &a物品购买成功! &f(花费: &e{cost}&f, 剩余 &e&l{left}&f)"
 
   PVP-Killed-Player: "title@10@80@10@&4击杀 &c{dead}@&6&o+{point} PVP积分 &8&l| &b&o+{exp} PVP经验值"
+  PVP-Player-Died: "message@&b&lPVPR &8>> &c你因在PVP中死亡而被扣除 &b{point} &3PVP积分、&b{exp} &3PVP经验值"
   PVP-Anti-Timer: "actionbar@&e请等待 &c&l{left} &e秒后再击杀玩家"
+  PVP-Point-Daily-Limited: "message@&b&lPVPR &8>> &c你获得的PVP积分在今天已达上限: &b&l{limit}&c!"
 
   Point-View: "message@&b&lPVPR &8>> &e{player} &3的PVP积分: &b&l{point}"
   Exp-View: "message@&b&lPVPR &8>> &e{player} &3的PVP经验: &b&l{exp}"
@@ -54,10 +57,25 @@ Messages:
 Settings:
   #PVP机制设置
   PVP:
-    #击杀每位玩家获得的PVP积分
-    Point-Per-Player: 2
+    #被击杀扣除的PVP积分
+    Point-Take-On-Death: 0
+    #每天最多得到多少积分. -1为无限
+    Daily-Limit: -1
+    #时区设置
+    Time-Zone: "+08:00"
+    #重复击杀玩家获得的积分 (第一项为第一次击杀, 第二项为重复两次击杀...)
+    #例如玩家A 重复3次击杀 玩家B, 玩家A将获得1积分
+    #例如玩家A 重复10次击杀 玩家B, 玩家A将获得0积分
+    Point-On-Kill:
+      - 2
+      - 1
+      - 1
+      - 1
+      - 0
     #击杀每位玩家获得的PVP经验
     Exp-Per-Player: 3
+    #被击杀扣除的PVP经验
+    Exp-Take-On-Death: 0
     #开启的世界
     Enable-World:
       - world
@@ -65,9 +83,11 @@ Settings:
       - world_the_end
   #防刷分机制设置
   Anti:
+    #是否开启
     Enable: true
     #防刷分检测间隔. 单位为 秒, 只能是正整数
     Time: 15
+    #刷分惩罚
     Punishment:
       #可用的操作类型: NONE(什么都不做)、MESSAGE(发送消息)、KICK(踢出玩家)
       Type: KICK
@@ -85,7 +105,19 @@ Settings:
   #全息图设置:
   Hologram:
     Plugin: HolographicDisplays
-    Refresh-Time: 300
+    Refresh-Time: 30
+
+  #数据库设置
+  MySQL:
+    #是否开启
+    Enable: false
+    Config:
+      DB_IP: "localhost"
+      DB_PORT: 3306
+      DB_NAME: "pvprewards"
+      DB_USER: "root"
+      DB_PASSWORD: "root"
+      DB_TABLE_PREFIX: "pvpr"
 
   #段位机制设置
   Rank:

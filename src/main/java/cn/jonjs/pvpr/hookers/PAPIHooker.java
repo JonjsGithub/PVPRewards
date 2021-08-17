@@ -1,6 +1,8 @@
 package cn.jonjs.pvpr.hookers;
 
+import cn.jonjs.pvpr.Main;
 import cn.jonjs.pvpr.data.Data;
+import cn.jonjs.pvpr.data.DataFromSQL;
 import cn.jonjs.pvpr.handlers.Rank;
 import cn.jonjs.pvpr.handlers.RankTop;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -29,7 +31,7 @@ public class PAPIHooker extends PlaceholderExpansion {
 
     @Override
     public String getVersion() {
-        return "2.0";
+        return "2.1";
     }
 
     @Override
@@ -41,11 +43,11 @@ public class PAPIHooker extends PlaceholderExpansion {
     public String onRequest(OfflinePlayer player, String params) {
 
         if (params.equalsIgnoreCase("point")) {
-            return "" + Data.getPoint(player.getName());
+            return Main.useMySQL ? "" + DataFromSQL.getPoint(player.getName()) : "" + Data.getPoint(player.getName());
         }
 
         if (params.equalsIgnoreCase("exp")) {
-            return "" + Data.getExp(player.getName());
+            return Main.useMySQL ? "" + DataFromSQL.getExp(player.getName()) : "" + Data.getExp(player.getName());
         }
 
         if (params.equalsIgnoreCase("rank")) {
@@ -70,10 +72,10 @@ public class PAPIHooker extends PlaceholderExpansion {
                         return RankTop.getPlayerName(place);
                     }
                     if (arr[2].equalsIgnoreCase("point")) {
-                        return "" + Data.getPoint(RankTop.getPlayerName(place));
+                        return Main.useMySQL ? "" + DataFromSQL.getPoint(RankTop.getPlayerName(place)) : "" + Data.getPoint(RankTop.getPlayerName(place));
                     }
                     if (arr[2].equalsIgnoreCase("exp")) {
-                        return "" + Data.getExp(RankTop.getPlayerName(place));
+                        return Main.useMySQL ? "" + DataFromSQL.getExp(RankTop.getPlayerName(place)) : "" + Data.getExp(RankTop.getPlayerName(place));
                     }
                     if (arr[2].equalsIgnoreCase("rank")) {
                         return Rank.getRankDisplayName(Rank.getRank(RankTop.getPlayerName(place)));
