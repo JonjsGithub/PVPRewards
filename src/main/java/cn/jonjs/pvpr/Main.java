@@ -417,7 +417,7 @@ public final class Main extends JavaPlugin {
                                 ps.execute();
                             }
                             Set<String> set2 = ExpData.config.getKeys(false);
-                            for (String player : set) {
+                            for (String player : set2) {
                                 String sql = "insert into `"+prefix+"_exp` values ( ?, ? ) on duplicate key update exp=?;";
                                 ps = conn.prepareStatement(sql);
                                 ps.setString(1, player);
