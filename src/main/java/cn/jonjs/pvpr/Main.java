@@ -3,10 +3,7 @@ package cn.jonjs.pvpr;
 import cn.jonjs.jonapi.utils.ArrayUtils;
 import cn.jonjs.jonapi.utils.GameVersionUtils;
 import cn.jonjs.pvpr.admininventories.AdminShopInv;
-import cn.jonjs.pvpr.data.Data;
-import cn.jonjs.pvpr.data.DataFromSQL;
-import cn.jonjs.pvpr.data.HologramData;
-import cn.jonjs.pvpr.data.Maps;
+import cn.jonjs.pvpr.data.*;
 import cn.jonjs.pvpr.handlers.*;
 import cn.jonjs.pvpr.admininventories.ItemEditInv;
 import cn.jonjs.pvpr.hookers.PAPIHooker;
@@ -25,6 +22,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Set;
 
 
 public final class Main extends JavaPlugin {
@@ -384,6 +387,88 @@ public final class Main extends JavaPlugin {
                                         .replace("{amount}", "" + amount)
                                         .replace("{player}", name));
                             }
+                        }
+                    }
+                }
+
+                ////PVPR Admin Transform
+                if (args[1].equalsIgnoreCase("transform")) { //PVPR Admin Transform 2:file2mysql
+                    if(args.length != 3) {
+                        MsgSender.sendAdminHelpList(p, "transform");
+                        return true;
+                    }
+                    if(args[2].equalsIgnoreCase("file2mysql")) {
+                        try {
+                            MySQLConnector connector = new MySQLConnector();
+                            Connection conn = connector.getConn();
+                            String prefix = connector.getPrefix();
+                            PreparedStatement ps = null;
+                            Set<String> set = PointData.config.getKeys(false);
+                            for (String player : set) {
+                                String sql = "insert into `"+prefix+"_point` values ( ?, ?, ?, ? ) on duplicate key update point=?, last_time=?, today_point=?;";
+                                ps = conn.prepareStatement(sql);
+                                ps.setString(1, player);
+                                ps.setInt(2, Data.getPoint(player));
+                                ps.setString(3, Data.getLastTime(player));
+                                ps.setInt(4, Data.getToday(player));
+                                ps.setInt(5, Data.getPoint(player));
+                                ps.setString(6, Data.getLastTime(player));
+                                ps.setInt(7, Data.getToday(player));
+                                ps.execute();
+                            }
+                            Set<String> set2 = ExpData.config.getKeys(false);
+                            for (String player : set) {
+                                String sql = "insert into `"+prefix+"_exp` values ( ?, ? ) on duplicate key update exp=?;";
+                                ps = conn.prepareStatement(sql);
+                                ps.setString(1, player);
+                                ps.setInt(2, Data.getExp(player));
+                                ps.setInt(3, Data.getExp(player));
+                                ps.execute();
+                            }
+                            ps.close();
+                            conn.close();
+                            p.sendMessage("§a文件->数据 转换成功.");
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                            p.sendMessage("§c文件->数据库 转换失败, 请看控制台!");
+                        }
+                    }
+                    if(args[2].equalsIgnoreCase("mysql2file")) {
+                        try {
+                            MySQLConnector connector = new MySQLConnector();
+                            Connection conn = connector.getConn();
+                            String prefix = connector.getPrefix();
+                            PreparedStatement ps = null;
+
+                            String sql = "SELECT * FROM "+prefix+"_point;";
+                            ps = conn.prepareStatement(sql);
+                            ResultSet rs = ps.executeQuery();
+                            while(rs.next()) {
+                                String player = rs.getString("player");
+                                int point = rs.getInt("point");
+                                String time = rs.getString("last_time");
+                                int today = rs.getInt("today_point");
+                                Data.setPoint(player, point);
+                                Data.setToday(player, today);
+                                PointData.config.set(player + ".time", time);
+                                PointData.save();
+                            }
+                            String sql2 = "SELECT * FROM "+prefix+"_exp;";
+                            ps = conn.prepareStatement(sql2);
+                            ResultSet rs2 = ps.executeQuery();
+                            while(rs.next()) {
+                                String player = rs.getString("player");
+                                int exp = rs.getInt("exp");
+                                Data.setExp(player, exp);
+                            }
+                            rs.close();
+                            rs2.close();
+                            ps.close();
+                            conn.close();
+                            p.sendMessage("§a数据库->文件 转换成功.");
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                            p.sendMessage("§c数据库->文件 转换失败, 请看控制台!");
                         }
                     }
                 }

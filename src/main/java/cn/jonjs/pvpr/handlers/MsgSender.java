@@ -130,6 +130,12 @@ public class MsgSender {
             );
             MessageUtils.sendJSONMessage(
                     p,
+                    "&e/PVPR Admin Transform &f- MySQL-YAML 数据互转相关指令",
+                    ClickEvent.Action.RUN_COMMAND,
+                    "/pvpr admin transform"
+            );
+            MessageUtils.sendJSONMessage(
+                    p,
                     "&c/PVPR Reload &f- 重载所有数据文件(推荐重启服务器)",
                     ClickEvent.Action.SUGGEST_COMMAND,
                     "/pvpr reload"
@@ -139,6 +145,27 @@ public class MsgSender {
                     "&c/PVPRAdminShop &f- 以管理员身份打开PVP积分商城",
                     ClickEvent.Action.RUN_COMMAND,
                     "/pvpradminshop"
+            );
+        }
+
+        if(type.equalsIgnoreCase("transform")) {
+            MessageUtils.sendJSONMessage(
+                    p,
+                    "&e/PVPR Admin Transform File2MySQL\n&f - 将YAML数据转换为MySQL数据",
+                    ClickEvent.Action.SUGGEST_COMMAND,
+                    "/pvpr admin transform file2mysql"
+            );
+            MessageUtils.sendJSONMessage(
+                    p,
+                    "&e/PVPR Admin Transform MySQL2File\n&f - 将MySQL数据转换为YAML数据",
+                    ClickEvent.Action.SUGGEST_COMMAND,
+                    "/pvpr admin transform mysql2file"
+            );
+            MessageUtils.sendJSONMessage(
+                    p,
+                    "&e&l[返回上一级]",
+                    ClickEvent.Action.RUN_COMMAND,
+                    "/pvpr admin"
             );
         }
 
