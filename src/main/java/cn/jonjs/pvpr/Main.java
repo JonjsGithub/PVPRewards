@@ -456,9 +456,9 @@ public final class Main extends JavaPlugin {
                             String sql2 = "SELECT * FROM "+prefix+"_exp;";
                             ps = conn.prepareStatement(sql2);
                             ResultSet rs2 = ps.executeQuery();
-                            while(rs.next()) {
-                                String player = rs.getString("player");
-                                int exp = rs.getInt("exp");
+                            while(rs2.next()) {
+                                String player = rs2.getString("player");
+                                int exp = rs2.getInt("exp");
                                 Data.setExp(player, exp);
                             }
                             rs.close();
