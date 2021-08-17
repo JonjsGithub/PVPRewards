@@ -3,6 +3,7 @@ package cn.jonjs.pvpr.handlers;
 import cn.jonjs.jonapi.utils.MessageUtils;
 import cn.jonjs.pvpr.Main;
 import cn.jonjs.pvpr.data.Data;
+import cn.jonjs.pvpr.data.DataFromSQL;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -27,7 +28,7 @@ public class Rank {
     }
 
     public static String getRank(String playerName) {
-        int playerExp = Data.getExp(playerName);
+        int playerExp = Main.useMySQL ? DataFromSQL.getExp(playerName) : Data.getExp(playerName);
         String rankKey = "";
         ArrayList<String> ranks = getRankListKeys();
         for (String key : ranks) {

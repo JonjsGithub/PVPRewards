@@ -3,6 +3,7 @@ package cn.jonjs.pvpr.listeners;
 import cn.jonjs.pvpr.Main;
 import cn.jonjs.pvpr.data.Data;
 import cn.jonjs.pvpr.data.DataFromSQL;
+import cn.jonjs.pvpr.data.Maps;
 import cn.jonjs.pvpr.handlers.Anti;
 import cn.jonjs.pvpr.handlers.MsgSender;
 import cn.jonjs.pvpr.handlers.TimeHandler;
@@ -15,6 +16,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PVPRPlayerDeathEvent implements Listener {
@@ -33,9 +35,34 @@ public class PVPRPlayerDeathEvent implements Listener {
             Entity damager = event.getDamager();
             if (damager.getType().equals(EntityType.PLAYER)) {
                 Player killer = (Player) damager;
-                // killer 不在开启的世界
+
+                //killer 不在开启的世界
                 if( ! worlds.contains(killer.getWorld().getName())) { return; }
-                int point = config.getInt("Settings.PVP.Point-Per-Player", 0);
+
+                int point;
+                List<Integer> pointList = config.getIntegerList("Settings.PVP.Point-On-Kill");
+                /** 重复击杀判断 **/
+                if( ! Maps.killSameMap.containsKey(killer)) {
+                    ArrayList<String> killed = new ArrayList<>();
+                    killed.add(died.getName());
+                    Maps.killSameMap.put(killer, killed);
+                    point = pointList.get(0);
+                } else {
+                    ArrayList<String> killed = Maps.killSameMap.get(killer);
+                    int size = killed.size();
+                    String last = killed.get(size - 1);
+                    if(last.equals(died.getName())) { //重复击杀
+                        killed.add(died.getName());
+                        Maps.killSameMap.replace(killer, killed);
+                        point = pointList.size() < killed.size() ? pointList.get(pointList.size() - 1) : pointList.get(size - 1) ;
+                    } else { //不重复击杀
+                        ArrayList<String> newKilled = new ArrayList<>();
+                        newKilled.add(died.getName());
+                        Maps.killSameMap.replace(killer, newKilled);
+                        point = pointList.get(0);
+                    }
+                }
+
                 int exp = config.getInt("Settings.PVP.Exp-Per-Player", 0);
                 int pointTake = config.getInt("Settings.PVP.Point-Take-On-Death", 0);
                 int expTake = config.getInt("Settings.PVP.Exp-Take-On-Death", 0);
@@ -82,9 +109,8 @@ public class PVPRPlayerDeathEvent implements Listener {
                             .replace("{dead}", died.getName())
                             .replace("{killer}", killer.getName()));
                     MsgSender.sendNormally(died, config.getString("Messages.PVP-Player-Died")
-                            .replace("{point}", "" + point)
-                            .replace("{exp}", "" + exp)
-                            .replace("{dead}", died.getName())
+                            .replace("{point}", "" + pointTake)
+                            .replace("{exp}", "" + expTake)
                             .replace("{killer}", killer.getName()));
                 } else {
                     MsgSender.sendNormally(killer, config.getString("Messages.PVP-Point-Daily-Limited")

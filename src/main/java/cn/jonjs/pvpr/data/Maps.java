@@ -3,6 +3,7 @@ package cn.jonjs.pvpr.data;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -16,6 +17,7 @@ public class Maps {
     public static HashMap<Player, Integer> coolDownMap = new HashMap<>();
     public static HashMap<Integer, String> rankTopMap = new HashMap<>();
     public static HashMap<String, String> trIDMap = new HashMap<>();
+    public static HashMap<Player, ArrayList<String>> killSameMap = new HashMap<>();
 
     public static String getTrID(String name) {
         return trIDMap.get(name);

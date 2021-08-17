@@ -124,7 +124,7 @@ public class MySQLQuery {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
         String nowStr = now.format(formatter);
-        String sql = "UPDATE "+tablePrefix+"_point SET last_time="+nowStr+" WHERE player='"+playerName+"';";
+        String sql = "UPDATE "+tablePrefix+"_point SET last_time='"+nowStr+"' WHERE player='"+playerName+"';";
         PreparedStatement ps;
         ps = conn.prepareStatement(sql);
         ps.execute();
@@ -173,44 +173,5 @@ public class MySQLQuery {
         ps.close();
     }
 
-    public ItemStack getItemStack(String editName) throws SQLException, IOException, ClassNotFoundException {
-        String sql = "SELECT * FROM "+tablePrefix+"_shop WHERE edit_name='"+editName+"';";
-        PreparedStatement ps;
-        ps = conn.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery();
-        if(rs.next()) {
-            Blob blob = rs.getBlob("itemstack");
-            ItemStack item = (ItemStack) Serializer.unserialize(blob);
-            ps.close();
-            rs.close();
-            return item;
-        } else {
-            ps.close();
-            rs.close();
-            return null;
-        }
-    }
-    public void setItemStack(String editName, ItemStack itemStack) throws SQLException, IOException, ClassNotFoundException {
-        Blob blob = Serializer.serialize(itemStack);
-        String sql;
-        PreparedStatement ps;
-        if(getItemStack(editName) == null) { //新增
-            sql = "INSERT INTO " + tablePrefix + "_shop VALUES (?,?,?,?,?,?);";
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, editName);
-            ps.setBlob(2, blob);
-            ps.setInt(3, 99999999);
-            ps.setDouble(4, 1.0);
-            ps.setInt(5, 0);
-            ps.setInt(6, -1);
-        } else {
-            sql = "UPDATE " + tablePrefix + "_shop SET itemstack=? WHERE edit_name=?;";
-            ps = conn.prepareStatement(sql);
-            ps.setBlob(1, blob);
-            ps.setString(2, editName);
-        }
-        ps.execute();
-        ps.close();
-    }
 
 }

@@ -48,7 +48,7 @@ Messages:
   PVP-Killed-Player: "title@10@80@10@&4击杀 &c{dead}@&6&o+{point} PVP积分 &8&l| &b&o+{exp} PVP经验值"
   PVP-Player-Died: "message@&b&lPVPR &8>> &c你因在PVP中死亡而被扣除 &b{point} &3PVP积分、&b{exp} &3PVP经验值"
   PVP-Anti-Timer: "actionbar@&e请等待 &c&l{left} &e秒后再击杀玩家"
-  PVP-Point-Daily-Limited: "message@&b&lPVPR >> &c你获得的PVP积分在今天已达上限: &b&l{limit}&c!"
+  PVP-Point-Daily-Limited: "message@&b&lPVPR &8>> &c你获得的PVP积分在今天已达上限: &b&l{limit}&c!"
 
   Point-View: "message@&b&lPVPR &8>> &e{player} &3的PVP积分: &b&l{point}"
   Exp-View: "message@&b&lPVPR &8>> &e{player} &3的PVP经验: &b&l{exp}"
@@ -57,12 +57,19 @@ Messages:
 Settings:
   #PVP机制设置
   PVP:
-    #击杀每位玩家获得的PVP积分
-    Point-Per-Player: 2
     #被击杀扣除的PVP积分
     Point-Take-On-Death: 0
     #每天最多得到多少积分. -1为无限
     Daily-Limit: -1
+    #重复击杀玩家获得的积分 (第一项为第一次击杀, 第二项为重复两次击杀...)
+    #例如玩家A 重复3次击杀 玩家B, 玩家A将获得1积分
+    #例如玩家A 重复10次击杀 玩家B, 玩家A将获得0积分
+    Point-On-Kill:
+      - 2
+      - 1
+      - 1
+      - 1
+      - 0
     #击杀每位玩家获得的PVP经验
     Exp-Per-Player: 3
     #被击杀扣除的PVP经验

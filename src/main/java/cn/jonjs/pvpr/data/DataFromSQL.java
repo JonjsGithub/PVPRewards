@@ -177,30 +177,5 @@ public class DataFromSQL {
         }
     }
 
-    public static ItemStack getItem(String editName) {
-        try {
-            MySQLConnector connector = new MySQLConnector();
-            Connection conn = connector.getConn();
-            MySQLQuery query = new MySQLQuery(conn);
-            ItemStack item = query.getItemStack(editName);
-            conn.close();
-            return item;
-        } catch (SQLException | IOException | ClassNotFoundException throwables) {
-            throwables.printStackTrace();
-            return null;
-        }
-    }
-    public static void setItem(String editName, ItemStack item, int price, double discount, int exp, int count) {
-        try {
-            MySQLConnector connector = new MySQLConnector();
-            Connection conn = connector.getConn();
-            MySQLQuery query = new MySQLQuery(conn);
-            query.setItemStack(editName, item);
-            conn.close();
-        } catch (SQLException | IOException | ClassNotFoundException throwables) {
-            throwables.printStackTrace();
-        }
-    }
-
 
 }

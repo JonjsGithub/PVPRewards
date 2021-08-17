@@ -446,9 +446,8 @@ public final class Main extends JavaPlugin {
                                 double discount = Double.parseDouble(args[5]);
                                 int exp = Integer.parseInt(args[6]);
                                 int count = Integer.parseInt(args[7]);
-                                ItemStack item = useMySQL ? DataFromSQL.getItem(editName) : Data.getItem(editName);
 
-                                if(item != null) { //编辑名下的物品已存在
+                                if(Data.getItem(editName) != null) { //编辑名下的物品已存在
                                     MsgSender.sendNormally(p, config.getString("Messages.Item-Exists")
                                             .replace("{editname}", editName));
                                 } else {
@@ -457,11 +456,7 @@ public final class Main extends JavaPlugin {
                                         MsgSender.sendFromKey(p, "Messages.Item-Is-Air");
                                     } else {
                                         //正常新增
-                                        if(useMySQL) {
-                                            DataFromSQL.setItem(editName, ViaVersion.getItemInMainHand(p), price, discount, exp, count);
-                                        } else {
-                                            Data.setItem(ViaVersion.getItemInMainHand(p), editName, price, discount, exp, count);
-                                        }
+                                        Data.setItem(ViaVersion.getItemInMainHand(p), editName, price, discount, exp, count);
                                         Maps.setEditing(p.getName(), editName);
                                         Inventory inv = ItemEditInv.generate(editName);
                                         p.closeInventory();

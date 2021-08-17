@@ -22,6 +22,7 @@ public class ConfigUpdater {
             config.set("Settings.PVP.Point-Take-On-Death", 0);
             config.set("Settings.PVP.Exp-Take-On-Death", 0);
             config.set("Messages.PVP-Player-Died", "message@&b&lPVPR &8>> &c你因在PVP中死亡而被扣除 &b{point} &3PVP积分、&b{exp} &3PVP经验值");
+            config.set("Messages.PVP-Point-Daily-Limited", "message@&b&lPVPR &8>> &c你获得的PVP积分在今天已达上限: &b&l{limit}&c!");
             config.set("Config-Version", 5);
             Main.getInst().saveConfig();
             ArrayList<String> players = new ArrayList<>(PointData.config.getKeys(false));

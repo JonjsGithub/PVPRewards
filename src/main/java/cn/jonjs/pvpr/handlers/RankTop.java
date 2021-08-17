@@ -3,6 +3,7 @@ package cn.jonjs.pvpr.handlers;
 import cn.jonjs.jonapi.utils.MessageUtils;
 import cn.jonjs.pvpr.Main;
 import cn.jonjs.pvpr.data.Data;
+import cn.jonjs.pvpr.data.DataFromSQL;
 import cn.jonjs.pvpr.data.ExpData;
 import cn.jonjs.pvpr.data.Maps;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,7 +21,8 @@ public class RankTop {
         //存入PVP Exp数据
         Set<String> pnKeys = ExpData.config.getKeys(false);
         for(String pn : pnKeys) {
-            expMap.put(pn, Data.getExp(pn));
+            int exp = Main.useMySQL ? DataFromSQL.getExp(pn) : Data.getExp(pn);
+            expMap.put(pn, exp);
         }
 
         //排序
@@ -69,21 +71,43 @@ public class RankTop {
     }
 
     public static void sendRankTop(Player p) {
+        int myExp = Main.useMySQL ? DataFromSQL.getExp(p.getName()) : Data.getExp(p.getName());
+        int myPlace = RankTop.getPlace(p.getName());
+        String pn1 = RankTop.getPlayerName(1);
+        String pn2 = RankTop.getPlayerName(2);
+        String pn3 = RankTop.getPlayerName(3);
+        String pn4 = RankTop.getPlayerName(4);
+        String pn5 = RankTop.getPlayerName(5);
+        String pn6 = RankTop.getPlayerName(6);
+        String pn7 = RankTop.getPlayerName(7);
+        String pn8 = RankTop.getPlayerName(8);
+        String pn9 = RankTop.getPlayerName(9);
+        String pn10 = RankTop.getPlayerName(10);
+        int exp1 = Main.useMySQL ? DataFromSQL.getExp(pn1) : Data.getExp(pn1);
+        int exp2 = Main.useMySQL ? DataFromSQL.getExp(pn2) : Data.getExp(pn2);
+        int exp3 = Main.useMySQL ? DataFromSQL.getExp(pn3) : Data.getExp(pn3);
+        int exp4 = Main.useMySQL ? DataFromSQL.getExp(pn4) : Data.getExp(pn4);
+        int exp5 = Main.useMySQL ? DataFromSQL.getExp(pn5) : Data.getExp(pn5);
+        int exp6 = Main.useMySQL ? DataFromSQL.getExp(pn6) : Data.getExp(pn6);
+        int exp7 = Main.useMySQL ? DataFromSQL.getExp(pn7) : Data.getExp(pn7);
+        int exp8 = Main.useMySQL ? DataFromSQL.getExp(pn8) : Data.getExp(pn8);
+        int exp9 = Main.useMySQL ? DataFromSQL.getExp(pn9) : Data.getExp(pn9);
+        int exp10 = Main.useMySQL ? DataFromSQL.getExp(pn10) : Data.getExp(pn10);
         MessageUtils.sendMessage(p, " ");
         MessageUtils.sendMessage(p, "&b&lPVP&3&lRewards &6&l排行榜");
         MessageUtils.sendMessage(p, "&3排名.玩家名 &7- &3 PVP经验");
-        MessageUtils.sendMessage(p, "&c&l1." + RankTop.getPlayerName(1) + "&7 - &b" + Data.getExp(RankTop.getPlayerName(1)));
-        MessageUtils.sendMessage(p, "&6&l2." + RankTop.getPlayerName(2) + "&7 - &b" + Data.getExp(RankTop.getPlayerName(2)));
-        MessageUtils.sendMessage(p, "&e&l3." + RankTop.getPlayerName(3) + "&7 - &b" + Data.getExp(RankTop.getPlayerName(3)));
-        MessageUtils.sendMessage(p, "&f&l4." + RankTop.getPlayerName(4) + "&7 - &b" + Data.getExp(RankTop.getPlayerName(4)));
-        MessageUtils.sendMessage(p, "&f&l5." + RankTop.getPlayerName(5) + "&7 - &b" + Data.getExp(RankTop.getPlayerName(5)));
-        MessageUtils.sendMessage(p, "&f6." + RankTop.getPlayerName(6) + "&7 - &b" + Data.getExp(RankTop.getPlayerName(6)));
-        MessageUtils.sendMessage(p, "&f7." + RankTop.getPlayerName(7) + "&7 - &b" + Data.getExp(RankTop.getPlayerName(7)));
-        MessageUtils.sendMessage(p, "&f8." + RankTop.getPlayerName(8) + "&7 - &b" + Data.getExp(RankTop.getPlayerName(8)));
-        MessageUtils.sendMessage(p, "&f9." + RankTop.getPlayerName(9) + "&7 - &b" + Data.getExp(RankTop.getPlayerName(9)));
-        MessageUtils.sendMessage(p, "&f10." + RankTop.getPlayerName(10) + "&7 - &b" + Data.getExp(RankTop.getPlayerName(10)));
-        MessageUtils.sendMessage(p, "&3我的PVP经验值: &b" + Data.getExp(p.getName()));
-        MessageUtils.sendMessage(p, "&3我的排行榜排名: &a第" + RankTop.getPlace(p.getName()) + "位");
+        MessageUtils.sendMessage(p, "&c&l1." + pn1 + "&7 - &b" + exp1);
+        MessageUtils.sendMessage(p, "&6&l2." + pn2 + "&7 - &b" + exp2);
+        MessageUtils.sendMessage(p, "&e&l3." + pn3 + "&7 - &b" + exp3);
+        MessageUtils.sendMessage(p, "&f&l4." + pn4 + "&7 - &b" + exp4);
+        MessageUtils.sendMessage(p, "&f&l5." + pn5 + "&7 - &b" + exp5);
+        MessageUtils.sendMessage(p, "&f6." + pn6 + "&7 - &b" + exp6);
+        MessageUtils.sendMessage(p, "&f7." + pn7 + "&7 - &b" + exp7);
+        MessageUtils.sendMessage(p, "&f8." + pn8 + "&7 - &b" + exp8);
+        MessageUtils.sendMessage(p, "&f9." + pn9 + "&7 - &b" + exp9);
+        MessageUtils.sendMessage(p, "&f10." + pn10 + "&7 - &b" + exp10);
+        MessageUtils.sendMessage(p, "&3我的PVP经验值: &b" + myExp);
+        MessageUtils.sendMessage(p, "&3我的排行榜排名: &a第" + myPlace + "位");
     }
 
 
