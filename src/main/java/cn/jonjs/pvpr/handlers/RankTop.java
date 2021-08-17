@@ -6,9 +6,14 @@ import cn.jonjs.pvpr.data.Data;
 import cn.jonjs.pvpr.data.DataFromSQL;
 import cn.jonjs.pvpr.data.ExpData;
 import cn.jonjs.pvpr.data.Maps;
+import cn.jonjs.pvpr.mysql.MySQLConnector;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 public class RankTop {
@@ -19,10 +24,31 @@ public class RankTop {
         Map<String, Integer> expMap = new HashMap<>();
 
         //存入PVP Exp数据
-        Set<String> pnKeys = ExpData.config.getKeys(false);
-        for(String pn : pnKeys) {
-            int exp = Main.useMySQL ? DataFromSQL.getExp(pn) : Data.getExp(pn);
-            expMap.put(pn, exp);
+        if(Main.useMySQL) {
+            try {
+                MySQLConnector connector = new MySQLConnector();
+                Connection conn = connector.getConn();
+                String prefix = connector.getPrefix();
+                PreparedStatement ps;
+                ps = conn.prepareStatement("SELECT * FROM " + prefix + "_exp");
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    String player = rs.getString("player");
+                    int exp = rs.getInt("exp");
+                    expMap.put(player, exp);
+                }
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        } else {
+            Set<String> pnKeys = ExpData.config.getKeys(false);
+            for (String pn : pnKeys) {
+                int exp = Data.getExp(pn);
+                expMap.put(pn, exp);
+            }
         }
 
         //排序

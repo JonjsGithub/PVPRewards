@@ -243,17 +243,19 @@ public final class Main extends JavaPlugin {
             if(args[0].equalsIgnoreCase("rank")) { //PVPR Rank 1:玩家
                 if(args.length >= 2) { //别人
                     String pn = args[1];
+                    int exp = useMySQL ? DataFromSQL.getExp(pn) : Data.getExp(pn);
                     MsgSender.sendNormally(p, config.getString("Messages.Rank-View")
                             .replace("{player}", pn)
                             .replace("{rank}", Rank.getRankDisplayName(Rank.getRank(pn)))
-                            .replace("{exp}", "" + Data.getExp(pn)));
+                            .replace("{exp}", "" + exp));
                 } else {
                     Rank.sendRankList(p);
                     String pn = p.getName();
+                    int exp = useMySQL ? DataFromSQL.getExp(pn) : Data.getExp(pn);
                     MsgSender.sendNormally(p, config.getString("Messages.Rank-View")
                             .replace("{player}", pn)
                             .replace("{rank}", Rank.getRankDisplayName(Rank.getRank(pn)))
-                            .replace("{exp}", "" + Data.getExp(p.getName())));
+                            .replace("{exp}", "" + exp));
                 }
             }
 

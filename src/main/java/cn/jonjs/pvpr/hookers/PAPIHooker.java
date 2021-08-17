@@ -72,10 +72,10 @@ public class PAPIHooker extends PlaceholderExpansion {
                         return RankTop.getPlayerName(place);
                     }
                     if (arr[2].equalsIgnoreCase("point")) {
-                        return "" + Data.getPoint(RankTop.getPlayerName(place));
+                        return Main.useMySQL ? "" + DataFromSQL.getPoint(RankTop.getPlayerName(place)) : "" + Data.getPoint(RankTop.getPlayerName(place));
                     }
                     if (arr[2].equalsIgnoreCase("exp")) {
-                        return "" + Data.getExp(RankTop.getPlayerName(place));
+                        return Main.useMySQL ? "" + DataFromSQL.getExp(RankTop.getPlayerName(place)) : "" + Data.getExp(RankTop.getPlayerName(place));
                     }
                     if (arr[2].equalsIgnoreCase("rank")) {
                         return Rank.getRankDisplayName(Rank.getRank(RankTop.getPlayerName(place)));
