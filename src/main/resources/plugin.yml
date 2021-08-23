@@ -1,5 +1,5 @@
 name: PVPRewards
-version: 2.1
+version: 2.2
 main: cn.jonjs.pvpr.Main
 softdepend: [ PlaceholderAPI, TrHologram, HolographicDisplays ]
 depend: [ JonAPI ]

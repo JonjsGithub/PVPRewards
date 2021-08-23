@@ -315,7 +315,7 @@ public class MsgSender {
         );
         MessageUtils.sendJSONMessage(
                 p,
-                "&b/PVPR Rank &f- 查看PVP段位信息",
+                "&b/PVPR Rank [玩家] &f- 查看PVP段位信息",
                 ClickEvent.Action.SUGGEST_COMMAND,
                 "/pvpr rank 玩家(不填为自己)"
         );
@@ -330,6 +330,12 @@ public class MsgSender {
                 "&b/PVPR Shop &f- 打开PVP积分商城",
                 ClickEvent.Action.RUN_COMMAND,
                 "/pvpr shop"
+        );
+        MessageUtils.sendJSONMessage(
+                p,
+                "&b/PVPR PVP &f- 切换PVP状态, 每次进服后默认为开",
+                ClickEvent.Action.SUGGEST_COMMAND,
+                "/pvpr pvp"
         );
         MessageUtils.sendJSONMessage(
                 p,

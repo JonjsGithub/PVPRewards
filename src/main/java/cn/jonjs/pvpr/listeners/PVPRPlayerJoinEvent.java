@@ -9,6 +9,7 @@ import cn.jonjs.pvpr.data.PointData;
 import cn.jonjs.pvpr.handlers.MsgSender;
 import cn.jonjs.pvpr.handlers.UpdateChecker;
 import net.md_5.bungee.api.chat.ClickEvent;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,6 +19,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import java.util.zip.DataFormatException;
 
 public class PVPRPlayerJoinEvent implements Listener {
+
+    FileConfiguration config = Main.getInst().getConfig();
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(org.bukkit.event.player.PlayerJoinEvent e) {
@@ -44,6 +47,11 @@ public class PVPRPlayerJoinEvent implements Listener {
             Maps.setPage(p.getName(), 1);
             MsgSender.sendFromKey(p, "Messages.Loaded-Data");
         }
+
+        Maps.setPvpStatus(p, true);
+        String status = Maps.getPVPStatus(p) ? "开启" : "关闭";
+        MsgSender.sendNormally(p, config.getString("Messages.PVP-Toggled")
+                .replace("{status}", status));
 
         if(p.isOp()) {
             if(UpdateChecker.hasNewerVersion()) {

@@ -30,6 +30,9 @@ public class PVPRInventoryClickEvent implements Listener {
     public void onInvClick(org.bukkit.event.inventory.InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
 
+        if(e.getClickedInventory() == null) {
+            return;
+        }
         if(e.getClickedInventory().getItem(e.getSlot()) == null) {
             return;
         }

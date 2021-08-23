@@ -18,6 +18,20 @@ public class Maps {
     public static HashMap<Integer, String> rankTopMap = new HashMap<>();
     public static HashMap<String, String> trIDMap = new HashMap<>();
     public static HashMap<Player, ArrayList<String>> killSameMap = new HashMap<>();
+    public static HashMap<Player, Boolean> pvpStatusMap = new HashMap<>();
+    public static HashMap<Player, Integer> taskID2Map = new HashMap<>();
+    public static HashMap<Player, Integer> coolDown2Map = new HashMap<>();
+
+    public static boolean getPVPStatus(Player p) {
+        return pvpStatusMap.getOrDefault(p, true);
+    }
+    public static void setPvpStatus(Player p, boolean enable) {
+        if(pvpStatusMap.containsKey(p)) {
+            pvpStatusMap.replace(p, enable);
+        } else {
+            pvpStatusMap.put(p, enable);
+        }
+    }
 
     public static String getTrID(String name) {
         return trIDMap.get(name);
@@ -50,6 +64,17 @@ public class Maps {
             }
         }
         return -1;
+    }
+
+    public static int getPVPTTaskID(Player p) {
+        return taskID2Map.getOrDefault(p, -1);
+    }
+    public static void setPVPTTaskID(Player p, int id) {
+        if(taskID2Map.containsKey(p)) {
+            taskID2Map.replace(p, id);
+        } else {
+            taskID2Map.put(p, id);
+        }
     }
 
     public static int getAntiTaskID(Player p) {

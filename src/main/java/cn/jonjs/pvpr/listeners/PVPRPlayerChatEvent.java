@@ -3,6 +3,8 @@ package cn.jonjs.pvpr.listeners;
 import cn.jonjs.pvpr.Main;
 import cn.jonjs.pvpr.handlers.Rank;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,6 +23,7 @@ public class PVPRPlayerChatEvent implements Listener {
         e.setFormat(config.getString("Settings.Rank.Chat-Format")
                 .replace("{rank}", rankDisplayName)
                 .replace("{chat}", "§r" + e.getFormat()));
+
 
 
     }

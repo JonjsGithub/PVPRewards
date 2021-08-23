@@ -1,5 +1,5 @@
-# PVPRewards 2.0 CONFIG - BY JONJS2333 - https://jonjs.cn/
-Config-Version: 5
+# PVPRewards 2.2 CONFIG - BY JONJS2333 - https://jonjs.cn/
+Config-Version: 6
 
 #信息提示
 # 可以发送各种形式的消息, 格式如下:
@@ -49,12 +49,25 @@ Messages:
   PVP-Player-Died: "message@&b&lPVPR &8>> &c你因在PVP中死亡而被扣除 &b{point} &3PVP积分、&b{exp} &3PVP经验值"
   PVP-Anti-Timer: "actionbar@&e请等待 &c&l{left} &e秒后再击杀玩家"
   PVP-Point-Daily-Limited: "message@&b&lPVPR &8>> &c你获得的PVP积分在今天已达上限: &b&l{limit}&c!"
+  PVP-Toggle-Forbidden: "message@&b&lPVPR &8>> &cPVP切换功能已经关闭. 你无法切换PVP状态!"
+  PVP-Toggle-Cooldown: "message@&b&lPVPR &8>> &cPVP切换仍在冷却中! 剩余时间: &e{cooldown}秒"
+  PVP-Toggle-Available: "message@&b&lPVPR &8>> &e现在你可以使用 &b/PVPR PVP &e来切换PVP状态了."
+  PVP-Toggled: "message@&b&lPVPR &8>> &e你的PVP状态已经切换! 现在起, PVP已经&c{status}"
+  PVP-Damager-Disabled: "message@&b&lPVPR &8>> &c你不能攻击玩家, 因为你的PVP已经关闭! &e(使用 /PVPR PVP 切换状态)"
+  PVP-Victim-Disabled: "message@&b&lPVPR &8>> &c对方已经关闭PVP. 你无法伤害TA!"
 
   Point-View: "message@&b&lPVPR &8>> &e{player} &3的PVP积分: &b&l{point}"
   Exp-View: "message@&b&lPVPR &8>> &e{player} &3的PVP经验: &b&l{exp}"
   Rank-View: "message@&b&lPVPR &8>> &e{player} &3的段位: &r{rank} &3(PVP经验: &b{exp}&3)"
 
 Settings:
+  #PVP状态切换设置
+  PVP-Toggle:
+    Enable: false
+    #切换间隔 (单位为秒)
+    Cooldown: 60
+
+
   #PVP机制设置
   PVP:
     #被击杀扣除的PVP积分

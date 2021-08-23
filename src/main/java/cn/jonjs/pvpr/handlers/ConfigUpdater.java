@@ -11,8 +11,10 @@ public class ConfigUpdater {
     static FileConfiguration config = Main.getInst().getConfig();
 
     public static void update() {
+
+        // 4 -> 6
         if(config.getInt("Config-Version") == 4) {
-            config.set("Config-Version", 5);
+            config.set("Config-Version", 6);
             Main.getInst().saveConfig();
             ArrayList<String> players = new ArrayList<>(PointData.config.getKeys(false));
             for(String p : players) {
@@ -23,6 +25,13 @@ public class ConfigUpdater {
             }
             PointData.save();
         }
+
+        // 5 -> 6
+        if(config.getInt("Config-Version") == 5) {
+            config.set("Config-Version", 6);
+            Main.getInst().saveConfig();
+        }
+
     }
 
 }

@@ -68,10 +68,15 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PVPRInventoryClickEvent(), this);
         getServer().getPluginManager().registerEvents(new PVPRPlayerDeathEvent(), this);
         getServer().getPluginManager().registerEvents(new PVPRPlayerChatEvent(), this);
+        getServer().getPluginManager().registerEvents(new PVPRPlayerDamagePlayerEvent(), this);
         getLogger().info("事件监听器注册成功!");
-        if(config.getInt("Config-Version", -1) != CONFIG_VERSION) {
+        if(config.getInt("Config-Version", -1) == 4) {
             ConfigUpdater.update();
-            getLogger().info("[!] 所有数据文件升级成功! 4 -> 5");
+            getLogger().info("[!] 所有数据文件已自动升级! 4 -> 6");
+        }
+        if(config.getInt("Config-Version", -1) == 5) {
+            ConfigUpdater.update();
+            getLogger().info("[!] 所有数据文件已自动升级! 5 -> 6");
         }
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             PAPIHooker papiHooker = new PAPIHooker(this);
@@ -166,6 +171,46 @@ public final class Main extends JavaPlugin {
             //PVPR
             if(args.length == 0) {
                 return false;
+            }
+
+            ///PVPR PVP
+            if (args[0].equalsIgnoreCase("pvp")) {
+                if ( ! config.getBoolean("Settings.PVP-Toggle.Enable", false)) {
+                    MsgSender.sendFromKey(p, "Messages.PVP-Toggle-Forbidden");
+                    return true;
+                }
+                int cd = Maps.coolDown2Map.getOrDefault(p, 0);
+                int cdConfig = config.getInt("Settings.PVP-Toggle.Cooldown", 60);
+                if(cd > 0) {
+                    MsgSender.sendNormally(p, config.getString("Messages.PVP-Toggle-Cooldown")
+                            .replace("{cooldown}", "" + cd));
+                    return true;
+                }
+                if(Maps.coolDown2Map.containsKey(p)) {
+                    Maps.coolDown2Map.replace(p, cdConfig);
+                } else {
+                    Maps.coolDown2Map.put(p, cdConfig);
+                }
+                int id = Bukkit.getScheduler().runTaskTimerAsynchronously(
+                        this,
+                        () -> {
+                            int cdNow = Maps.coolDown2Map.getOrDefault(p, cdConfig);
+                            Maps.coolDown2Map.replace(p, cdNow - 1);
+                            if(cdNow == 0) {
+                                MsgSender.sendFromKey(p, "Messages.PVP-Toggle-Available");
+                                Maps.coolDown2Map.replace(p, 0);
+                                Bukkit.getScheduler().cancelTask(Maps.taskID2Map.get(p));
+                                Maps.taskID2Map.remove(p);
+                            }
+                        },
+                        0,
+                        20
+                ).getTaskId();
+                Maps.setPVPTTaskID(p, id);
+                Maps.setPvpStatus(p, !(Maps.getPVPStatus(p))); //反
+                String status = Maps.getPVPStatus(p) ? "开启" : "关闭";
+                MsgSender.sendNormally(p, config.getString("Messages.PVP-Toggled")
+                        .replace("{status}", status));
             }
 
             //PVPR Reload
